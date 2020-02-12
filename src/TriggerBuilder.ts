@@ -1,14 +1,14 @@
 export class TriggerBuilder{
     static StartsWith(word:string) : Function{
-        return new RegExp(`^${word}`).test;
+        return (commandText:string) : boolean => { return commandText.startsWith(word);};
     }
 
     static EndsWith(word:string) : Function{
-        return new RegExp(`${word}$`).test;
+        return (commandText:string) : boolean => { return commandText.endsWith(word);};
     }
 
     static Includes(word:string) : Function{
-        return new RegExp('\\b' + word + '\\b').test;
+        return (commandText:string) : boolean => { return commandText.includes(word);};
     }
 
     static Regex(regex:RegExp) : Function{
