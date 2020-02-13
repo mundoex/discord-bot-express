@@ -7,7 +7,7 @@ export class Command extends AbstractCommand{
 
     constructor(commandString:string, commandFunction:Function){
         super(commandFunction);
-        this.commandString=commandString;
+        this.commandString=escapeRegExp(commandString);
         this.params=undefined;
     }
 
@@ -21,4 +21,8 @@ export class Command extends AbstractCommand{
     run(msg:any, client:any){
         return this.runFunction(msg, client, this.params);
     }
+}
+
+function escapeRegExp(text:string) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }

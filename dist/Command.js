@@ -5,7 +5,7 @@ const AbstractCommand_1 = require("./AbstractCommand");
 class Command extends AbstractCommand_1.AbstractCommand {
     constructor(commandString, commandFunction) {
         super(commandFunction);
-        this.commandString = commandString;
+        this.commandString = escapeRegExp(commandString);
         this.params = undefined;
     }
     matches(commandText) {
@@ -19,3 +19,6 @@ class Command extends AbstractCommand_1.AbstractCommand {
     }
 }
 exports.Command = Command;
+function escapeRegExp(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
