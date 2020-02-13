@@ -2,16 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 class TriggerBuilder {
     static StartsWith(word) {
-        return new RegExp(`^${word}`).test;
+        return (commandText) => { return commandText.startsWith(word); };
     }
     static EndsWith(word) {
-        return new RegExp(`${word}$`).test;
+        return (commandText) => { return commandText.endsWith(word); };
     }
     static Includes(word) {
-        return new RegExp('\\b' + word + '\\b').test;
+        return (commandText) => { return commandText.includes(word); };
     }
     static Regex(regex) {
-        return regex.test;
+        return (commandText) => { return commandText.match(regex) !== null; };
     }
     static Matches(word) {
         return (commandText) => { return word === commandText; };

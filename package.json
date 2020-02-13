@@ -8,7 +8,7 @@
     "start": "npm run build && node dist/index.js",
     "prepublish": "npm run build",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run build && jasmine --reporter=jasmine-console-reporter --config=jasmine.json"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +16,10 @@
     "path-to-regexp": "^6.1.0"
   },
   "devDependencies": {
+    "@types/jasmine": "^3.5.3",
     "@types/node": "^13.7.1",
+    "jasmine": "^3.5.0",
+    "jasmine-console-reporter": "^3.1.0",
     "ts-node": "^8.6.2",
     "typescript": "^3.7.5"
   }

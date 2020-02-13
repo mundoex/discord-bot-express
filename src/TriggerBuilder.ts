@@ -12,7 +12,7 @@ export class TriggerBuilder{
     }
 
     static Regex(regex:RegExp) : Function{
-        return regex.test;
+        return (commandText:string) : boolean => { return commandText.match(regex)!==null;};
     }
 
     static Matches(word:string) : Function{
