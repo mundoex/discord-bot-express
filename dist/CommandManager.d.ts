@@ -12,7 +12,8 @@ declare class CommandManager {
     command(commandString: string, commandFunction: Function): void;
     trigger(triggerMatchingFunction: Function, triggerFunction: Function): void;
     shouldTrigger(): boolean;
-    parseMessageContent(commandText: string): string;
+    hasPrefix(): boolean;
+    removePrefixFromMessage(commandText: string): string;
     addDefaultHelper(): void;
     addListAll(): void;
     commandAlreadyExists(): boolean;

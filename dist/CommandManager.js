@@ -25,23 +25,23 @@ class CommandManager {
     }
     handleMessage(msg, client) {
         //check for commands
+        const noPrefixMessageContent = this.removePrefixFromMessage(msg.content);
         for (let i = 0; i < this.commandsList.length; i++) {
-            if (this.commandsList[i].matches(msg.content)) {
+            if (this.commandsList[i].matches(noPrefixMessageContent)) {
                 return this.commandsList[i].run(msg, client);
             }
         }
         //check for triggers
         if (this.shouldTrigger()) {
-            const parsedMessageContent = this.parseMessageContent(msg.content);
             for (let j = 0; j < this.triggersList.length; j++) {
-                if (this.triggersList[j].matches(parsedMessageContent)) {
+                if (this.triggersList[j].matches(noPrefixMessageContent)) {
                     return this.triggersList[j].run(msg, client);
                 }
             }
         }
     }
     command(commandString, commandFunction) {
-        this.commandsList.push(new Command_1.Command(this.prefix + commandString, commandFunction));
+        this.commandsList.push(new Command_1.Command(commandString, commandFunction));
     }
     trigger(triggerMatchingFunction, triggerFunction) {
         this.triggersList.push(new Trigger_1.Trigger(triggerMatchingFunction, triggerFunction));
@@ -49,8 +49,11 @@ class CommandManager {
     shouldTrigger() {
         return this.triggerRate <= randomBetween(0, 100);
     }
-    parseMessageContent(commandText) {
-        return this.prefix !== "" ? commandText.replace(this.prefix, "") : commandText;
+    hasPrefix() {
+        return this.prefix !== "";
+    }
+    removePrefixFromMessage(commandText) {
+        return this.hasPrefix() ? commandText.replace(this.prefix, "") : commandText;
     }
     addDefaultHelper() {
     }
