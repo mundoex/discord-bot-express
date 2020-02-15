@@ -1,5 +1,6 @@
 import { Command } from "./Command";
 import { Trigger } from "./Trigger";
+import { replaceSpacesWithSlashes } from "./utils";
 
 class CommandManager{
     commandsList:Array<Command>;
@@ -30,16 +31,16 @@ class CommandManager{
 
     handleMessage(msg:any, client:any){
         //check for commands
-        const noPrefixMessageContent=this.removePrefixFromMessage(msg.content);
+        const parsedMessage=this.parseMessage(msg.content);
         for(let i=0;i<this.commandsList.length;i++){
-            if(this.commandsList[i].matches(noPrefixMessageContent)){
+            if(this.commandsList[i].matches(parsedMessage)){
                 return this.commandsList[i].run(msg,client);
             }
         }
         //check for triggers
         if(this.shouldTrigger()){
             for(let j=0;j<this.triggersList.length;j++){
-                if(this.triggersList[j].matches(noPrefixMessageContent)){
+                if(this.triggersList[j].matches(parsedMessage)){
                     return this.triggersList[j].run(msg,client);
                 }
             }
@@ -60,6 +61,10 @@ class CommandManager{
 
     hasPrefix(){
         return this.prefix!=="";
+    }
+
+    parseMessage(commandText:string) : string{
+        return replaceSpacesWithSlashes(this.removePrefixFromMessage(commandText));
     }
 
     removePrefixFromMessage(commandText:string){

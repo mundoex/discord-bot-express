@@ -1,19 +1,21 @@
 import {match, MatchFunction} from "path-to-regexp";
 import { AbstractCommand } from "./AbstractCommand";
+import { replaceSpacesWithSlashes } from "./utils";
 
 export class Command extends AbstractCommand{
     commandString:string;
+    matchFunction:MatchFunction;
     params:any;
 
     constructor(commandString:string, commandFunction:Function){
         super(commandFunction);
-        this.commandString=escapeRegExp(commandString);
+        needsReplace(commandString) ? this.commandString=replaceSpacesWithSlashes(commandString) : this.commandString=commandString;
+        this.matchFunction=match(this.commandString);
         this.params=undefined;
     }
 
     matches(commandText:string){
-        const matchFunction:MatchFunction = match(this.commandString);
-        let result=matchFunction(commandText);
+        let result=this.matchFunction(commandText);
         result!==false ? this.params=result.params : this.params=undefined;
         return this.params!==undefined;
     }
@@ -23,6 +25,6 @@ export class Command extends AbstractCommand{
     }
 }
 
-function escapeRegExp(text:string) {
-    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+function needsReplace(commandText:string) {
+    return commandText.includes(" ");
 }

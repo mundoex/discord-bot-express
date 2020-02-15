@@ -1,35 +1,43 @@
 import "jasmine";
 import {Command} from "../Command";
 import {CommandBuilder} from "../CommandBuilder";
+import {replaceSpacesWithSlashes} from "../utils";
 
 describe(">Command Tests", function() {
     var runFunc=(msg:any,client:any,params:any)=>{return params};
-    var command1=new Command(`quem tem razao ${CommandBuilder.Arg("option1")} ou ${CommandBuilder.Arg("option2")} ?`,runFunc);
-    var commandCall="quem tem razao david ou laranjeira ?";
-
-    it("Should be able to check if command was created",function() {
-        expect(command1).toBeDefined();
+    //command functions
+    it("Should check if a command string gets parsed",function() {
+        var cmd=new Command(`ball shake ${CommandBuilder.Optional("times")}`,runFunc);
+        expect(cmd).toBeDefined();
+        expect(cmd.commandString).toEqual("ball/shake/:times?")
     });
 
-    it("Should be able to check if matches a commandCall",function() {
-        expect(command1.matches(commandCall)).toBe(true);
+    //Example commands
+    it("Should check if a command with optional works",function() {
+        var cmd=new Command(`ball shake ${CommandBuilder.Optional("times")}`,runFunc);
+        var cmdTextWithOption=replaceSpacesWithSlashes("ball shake 2");
+        var cmdTextWithoutOption=replaceSpacesWithSlashes("ball shake");
+        expect(cmd).toBeDefined();
+        expect(cmd.matches(cmdTextWithOption)).toBeTrue();
+        expect(cmd.matches(cmdTextWithoutOption)).toBeTrue();
     });
 
-    it("Should be able to check if params exist",function() {
-        command1.matches(commandCall);
-        expect(command1.params.option1).toBeDefined();
-        expect(command1.params.option2).toBeDefined();
+    it("Should check if a command with arg works",function() {
+        var cmd=new Command(`quem tem razao ${CommandBuilder.Arg("option1")} ou ${CommandBuilder.Arg("option2")} \%3F`,runFunc);
+        var cmdText1=replaceSpacesWithSlashes("quem tem razao david ou laranjeira ?");
+        var cmdText2=replaceSpacesWithSlashes("quem tem razao david ou ?");
+        expect(cmd).toBeDefined();
+        expect(cmd.matches(cmdText1)).toBeTrue();
+        expect(cmd.matches(cmdText2)).toBeFalse();
     });
 
-    it("Should be able to check if params are right",function() {
-        command1.matches(commandCall);
-        expect(command1.params.option1).toEqual("david");
-        expect(command1.params.option2).toEqual("laranjeira");
-    });
-
-    it("Should be able to check if runFunction Works",function() {
-        command1.matches(commandCall);
-        expect(command1.run("msg","client")).toEqual(command1.params);
+    it("Should check if a command with args works",function() {
+        var cmd=new Command(`pikachu ${CommandBuilder.Args("messages")}`,runFunc);
+        var cmdText1=replaceSpacesWithSlashes("pikachu pickaxe axe");
+        var cmdText2=replaceSpacesWithSlashes("pikachu axe");
+        expect(cmd).toBeDefined();
+        expect(cmd.matches(cmdText1)).toBeTrue();
+        expect(cmd.matches(cmdText2)).toBeTrue();
     });
 
 });

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = require("./Command");
 const Trigger_1 = require("./Trigger");
+const utils_1 = require("./utils");
 class CommandManager {
     constructor() {
         this.commandsList = new Array();
@@ -25,16 +26,16 @@ class CommandManager {
     }
     handleMessage(msg, client) {
         //check for commands
-        const noPrefixMessageContent = this.removePrefixFromMessage(msg.content);
+        const parsedMessage = this.parseMessage(msg.content);
         for (let i = 0; i < this.commandsList.length; i++) {
-            if (this.commandsList[i].matches(noPrefixMessageContent)) {
+            if (this.commandsList[i].matches(parsedMessage)) {
                 return this.commandsList[i].run(msg, client);
             }
         }
         //check for triggers
         if (this.shouldTrigger()) {
             for (let j = 0; j < this.triggersList.length; j++) {
-                if (this.triggersList[j].matches(noPrefixMessageContent)) {
+                if (this.triggersList[j].matches(parsedMessage)) {
                     return this.triggersList[j].run(msg, client);
                 }
             }
@@ -51,6 +52,9 @@ class CommandManager {
     }
     hasPrefix() {
         return this.prefix !== "";
+    }
+    parseMessage(commandText) {
+        return utils_1.replaceSpacesWithSlashes(this.removePrefixFromMessage(commandText));
     }
     removePrefixFromMessage(commandText) {
         return this.hasPrefix() ? commandText.replace(this.prefix, "") : commandText;

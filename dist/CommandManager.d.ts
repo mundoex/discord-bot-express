@@ -13,6 +13,7 @@ declare class CommandManager {
     trigger(triggerMatchingFunction: Function, triggerFunction: Function): void;
     shouldTrigger(): boolean;
     hasPrefix(): boolean;
+    parseMessage(commandText: string): string;
     removePrefixFromMessage(commandText: string): string;
     addDefaultHelper(): void;
     addListAll(): void;
