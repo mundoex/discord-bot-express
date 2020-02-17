@@ -1,9 +1,11 @@
 import { Command } from "./Command";
 import { Trigger } from "./Trigger";
+import { MiddlewareHandler } from "./MiddlewareHandler";
 
 class CommandManager{
     commandsList:Array<Command>;
     triggersList:Array<Trigger>;
+    middlewareHandler:MiddlewareHandler;
     triggerRate:number;
     prefix:string;
     
@@ -12,6 +14,7 @@ class CommandManager{
         this.triggersList=new Array<Trigger>();
         this.triggerRate=100;
         this.prefix="";
+        this.middlewareHandler=new MiddlewareHandler();
     }
 
     setTriggerRate(newTriggerRate:number) : void {
@@ -28,12 +31,15 @@ class CommandManager{
         newPrefix===undefined || this.prefix===null ? this.prefix="" : this.prefix=newPrefix;
     }
 
-    handleMessage(msg:any, client:any,next:any){
+    use(fn:Function){
+        this.middlewareHandler.use(fn);
+    }
+
+    checkForMatches(msg:any,client:any,parsedMessage:string,tokens:Array<string>){
         //check for commands
-        const parsedMessage=this.parseMessage(msg.content);
         for(let i=0;i<this.commandsList.length;i++){
             if(this.commandsList[i].matches(msg, parsedMessage)){
-                return this.commandsList[i].run(msg,client,next);
+                return this.commandsList[i].run(msg,client,tokens);
             }
         }
         //check for triggers
@@ -46,8 +52,21 @@ class CommandManager{
         }
     }
 
+    /*
+    If message as prefix
+    create variable without prefix
+    create variable with the message split into tokens so each middleware call doesnt have to tokenize the message
+    */
+    handleMessage(msg:any, client:any){
+        const parsedMessage=this.parseMessage(msg.content);
+        const tokens=parsedMessage.split(" ");
+        return this.middlewareHandler.handle(msg,client,tokens,
+            (msgFromMiddleware:any,clientFromMiddleware:any,params:any)=>{
+                return this.checkForMatches(msgFromMiddleware,clientFromMiddleware,parsedMessage,params);
+            });
+    }
+
     command(commandString:string, ...middlewares:any) : Command {
-        console.log("Middlewares in Command Manager",middlewares);
         let newLength=this.commandsList.push(new Command(commandString, middlewares));
         return this.commandsList[newLength-1];
     }

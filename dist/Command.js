@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_to_regexp_1 = require("path-to-regexp");
 const AbstractCommand_1 = require("./AbstractCommand");
-const Middlewarehandler_1 = require("./tests/Middlewarehandler");
+const MiddlewareHandler_1 = require("./MiddlewareHandler");
 class Command extends AbstractCommand_1.AbstractCommand {
     /*
     Pops the last element of the middlewares
@@ -15,7 +15,7 @@ class Command extends AbstractCommand_1.AbstractCommand {
         this.matchFunction = path_to_regexp_1.match(this.commandString);
         this.params = undefined;
         this.description = "";
-        this.middlewareHandler = new Middlewarehandler_1.MiddlewareHandler();
+        this.middlewareHandler = new MiddlewareHandler_1.MiddlewareHandler();
         middlewares.forEach(middleware => this.middlewareHandler.use(middleware));
     }
     matches(msg, parsedCommandText) {

@@ -1,6 +1,6 @@
 import {match, MatchFunction} from "path-to-regexp";
 import { AbstractCommand } from "./AbstractCommand";
-import { MiddlewareHandler } from "./tests/Middlewarehandler";
+import { MiddlewareHandler } from "./MiddlewareHandler";
 
 export class Command extends AbstractCommand{
     commandString:string;
