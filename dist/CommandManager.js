@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = require("./Command");
 const Trigger_1 = require("./Trigger");
-const MiddlewareHandler_1 = require("./MiddlewareHandler");
+const MiddlewareHandler_1 = require("./middlewares/MiddlewareHandler");
 class CommandManager {
     constructor() {
         this.commandsList = new Array();
@@ -25,8 +25,8 @@ class CommandManager {
     setPrefix(newPrefix) {
         newPrefix === undefined || this.prefix === null ? this.prefix = "" : this.prefix = newPrefix;
     }
-    use(fn) {
-        this.middlewareHandler.use(fn);
+    use(middlewareFunction) {
+        this.middlewareHandler.use(middlewareFunction);
     }
     checkForMatches(msg, client, parsedMessage, tokens) {
         //check for commands
@@ -39,7 +39,7 @@ class CommandManager {
         if (this.shouldTrigger()) {
             for (let j = 0; j < this.triggersList.length; j++) {
                 if (this.triggersList[j].matches(msg, parsedMessage)) {
-                    return this.triggersList[j].run(msg, client);
+                    return this.triggersList[j].run(msg, client, tokens);
                 }
             }
         }
@@ -60,8 +60,8 @@ class CommandManager {
         let newLength = this.commandsList.push(new Command_1.Command(commandString, middlewares));
         return this.commandsList[newLength - 1];
     }
-    trigger(triggerMatchingFunction, triggerFunction) {
-        let newLength = this.triggersList.push(new Trigger_1.Trigger(triggerMatchingFunction, triggerFunction));
+    trigger(triggerMatchingFunction, ...middlewares) {
+        let newLength = this.triggersList.push(new Trigger_1.Trigger(triggerMatchingFunction, middlewares));
         return this.triggersList[newLength - 1];
     }
     shouldTrigger() {

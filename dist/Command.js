@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_to_regexp_1 = require("path-to-regexp");
 const AbstractCommand_1 = require("./AbstractCommand");
-const MiddlewareHandler_1 = require("./MiddlewareHandler");
 class Command extends AbstractCommand_1.AbstractCommand {
     /*
     Pops the last element of the middlewares
@@ -10,17 +9,15 @@ class Command extends AbstractCommand_1.AbstractCommand {
     Adds the remaining functions that are the actual middlewares to the middlewares handler
     */
     constructor(commandString, middlewares) {
-        super(middlewares.pop());
+        super(middlewares);
         this.commandString = commandString;
         this.matchFunction = path_to_regexp_1.match(this.commandString);
         this.params = undefined;
         this.description = "";
-        this.middlewareHandler = new MiddlewareHandler_1.MiddlewareHandler();
-        middlewares.forEach(middleware => this.middlewareHandler.use(middleware));
     }
     matches(msg, parsedCommandText) {
         let result = this.matchFunction(parsedCommandText);
-        result !== false && !msg.author.bot ? this.params = result.params : this.params = undefined;
+        result !== false ? this.params = result.params : this.params = undefined;
         return this.params !== undefined;
     }
     run(msg, client, params) {
@@ -34,6 +31,3 @@ class Command extends AbstractCommand_1.AbstractCommand {
     }
 }
 exports.Command = Command;
-function needsReplace(commandText) {
-    return commandText.includes(" ");
-}

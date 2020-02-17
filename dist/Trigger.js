@@ -2,15 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const AbstractCommand_1 = require("./AbstractCommand");
 class Trigger extends AbstractCommand_1.AbstractCommand {
-    constructor(triggerMatchingFunction, triggerFunction) {
-        super(triggerFunction);
+    constructor(triggerMatchingFunction, middlewares) {
+        super(middlewares);
         this.triggerMatchingFunction = triggerMatchingFunction;
     }
     matches(msg, parsedCommandText) {
-        return this.triggerMatchingFunction(parsedCommandText) && !msg.author.bot;
+        return this.triggerMatchingFunction(parsedCommandText);
     }
-    run(msg, client) {
-        return this.runFunction(msg, client);
+    run(msg, client, params) {
+        return this.middlewareHandler.handle(msg, client, params, (msg, client, params) => {
+            return this.runFunction(msg, client, params);
+        });
     }
 }
 exports.Trigger = Trigger;

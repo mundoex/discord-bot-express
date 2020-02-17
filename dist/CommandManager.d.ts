@@ -1,6 +1,6 @@
 import { Command } from "./Command";
 import { Trigger } from "./Trigger";
-import { MiddlewareHandler } from "./MiddlewareHandler";
+import { MiddlewareHandler } from "./middlewares/MiddlewareHandler";
 declare class CommandManager {
     commandsList: Array<Command>;
     triggersList: Array<Trigger>;
@@ -10,11 +10,11 @@ declare class CommandManager {
     constructor();
     setTriggerRate(newTriggerRate: number): void;
     setPrefix(newPrefix: string): void;
-    use(fn: Function): void;
+    use(middlewareFunction: Function): void;
     checkForMatches(msg: any, client: any, parsedMessage: string, tokens: Array<string>): any;
     handleMessage(msg: any, client: any): void;
-    command(commandString: string, ...middlewares: any): Command;
-    trigger(triggerMatchingFunction: Function, triggerFunction: Function): Trigger;
+    command(commandString: string, ...middlewares: Array<Function>): Command;
+    trigger(triggerMatchingFunction: Function, ...middlewares: Array<Function>): Trigger;
     shouldTrigger(): boolean;
     hasPrefix(): boolean;
     parseMessage(commandText: string): string;

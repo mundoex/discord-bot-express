@@ -6,3 +6,5 @@ var CommandBuilder_1 = require("./CommandBuilder");
 exports.CommandBuilder = CommandBuilder_1.CommandBuilder;
 var TriggerBuilder_1 = require("./TriggerBuilder");
 exports.TriggerBuilder = TriggerBuilder_1.TriggerBuilder;
+var BotMiddleware_1 = require("./middlewares/BotMiddleware");
+exports.BotMiddleware = BotMiddleware_1.BotMiddleware;

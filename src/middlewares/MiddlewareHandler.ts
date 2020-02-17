@@ -4,9 +4,9 @@ export class MiddlewareHandler{
         this.stack=new Array<Function>();
     }
 
-    use(fn:Function) {
-        if (typeof fn !== 'function') throw new Error('Middleware must be a function!');
-        this.stack.push(fn);
+    use(middlewareFunction:Function) {
+        if (typeof middlewareFunction !== 'function') throw new Error('Middleware must be a function!');
+        this.stack.push(middlewareFunction);
     }
 
     handle(msg:any, client:any, params:any, callback:Function) {

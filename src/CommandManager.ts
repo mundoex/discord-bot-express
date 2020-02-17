@@ -1,6 +1,6 @@
 import { Command } from "./Command";
 import { Trigger } from "./Trigger";
-import { MiddlewareHandler } from "./MiddlewareHandler";
+import { MiddlewareHandler } from "./middlewares/MiddlewareHandler";
 
 class CommandManager{
     commandsList:Array<Command>;
@@ -31,8 +31,8 @@ class CommandManager{
         newPrefix===undefined || this.prefix===null ? this.prefix="" : this.prefix=newPrefix;
     }
 
-    use(fn:Function){
-        this.middlewareHandler.use(fn);
+    use(middlewareFunction:Function){
+        this.middlewareHandler.use(middlewareFunction);
     }
 
     checkForMatches(msg:any,client:any,parsedMessage:string,tokens:Array<string>){
@@ -46,7 +46,7 @@ class CommandManager{
         if(this.shouldTrigger()){
             for(let j=0;j<this.triggersList.length;j++){
                 if(this.triggersList[j].matches(msg, parsedMessage)){
-                    return this.triggersList[j].run(msg,client);
+                    return this.triggersList[j].run(msg,client,tokens);
                 }
             }
         }
@@ -66,13 +66,13 @@ class CommandManager{
             });
     }
 
-    command(commandString:string, ...middlewares:any) : Command {
+    command(commandString:string, ...middlewares:Array<Function>) : Command {
         let newLength=this.commandsList.push(new Command(commandString, middlewares));
         return this.commandsList[newLength-1];
     }
 
-    trigger(triggerMatchingFunction:Function, triggerFunction:Function) : Trigger {
-        let newLength=this.triggersList.push(new Trigger(triggerMatchingFunction, triggerFunction));
+    trigger(triggerMatchingFunction:Function, ...middlewares:Array<Function>) : Trigger {
+        let newLength=this.triggersList.push(new Trigger(triggerMatchingFunction, middlewares));
         return this.triggersList[newLength-1];
     }
 
