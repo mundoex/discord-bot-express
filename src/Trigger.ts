@@ -8,8 +8,8 @@ export class Trigger extends AbstractCommand{
         this.triggerMatchingFunction=triggerMatchingFunction;
     }
 
-    matches(commandText:string) : boolean{
-        return this.triggerMatchingFunction(commandText);
+    matches(msg:any, parsedCommandText:string) : boolean{
+        return this.triggerMatchingFunction(parsedCommandText) && !msg.author.bot;
     }
 
     run(msg:any,client:any){

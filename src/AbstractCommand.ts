@@ -8,6 +8,6 @@ export abstract class AbstractCommand implements IRunnable,IMatchable{
         this.runFunction=runFunction;
     }
 
-    abstract run(msg: any, client: any) : any;
-    abstract matches(commandText: string): boolean;
+    abstract run(msg: any, client: any, params:any) : any;
+    abstract matches(msg:any,commandText: string): boolean;
 }

@@ -1,3 +1,3 @@
 export interface IRunnable {
-    run(msg: any, client: any): any;
+    run(msg: any, client: any, params: any): any;
 }

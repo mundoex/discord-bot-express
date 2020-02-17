@@ -1,6 +1,5 @@
 import { Command } from "./Command";
 import { Trigger } from "./Trigger";
-import { replaceSpacesWithSlashes } from "./utils";
 
 class CommandManager{
     commandsList:Array<Command>;
@@ -29,30 +28,33 @@ class CommandManager{
         newPrefix===undefined || this.prefix===null ? this.prefix="" : this.prefix=newPrefix;
     }
 
-    handleMessage(msg:any, client:any){
+    handleMessage(msg:any, client:any,next:any){
         //check for commands
         const parsedMessage=this.parseMessage(msg.content);
         for(let i=0;i<this.commandsList.length;i++){
-            if(this.commandsList[i].matches(parsedMessage)){
-                return this.commandsList[i].run(msg,client);
+            if(this.commandsList[i].matches(msg, parsedMessage)){
+                return this.commandsList[i].run(msg,client,next);
             }
         }
         //check for triggers
         if(this.shouldTrigger()){
             for(let j=0;j<this.triggersList.length;j++){
-                if(this.triggersList[j].matches(parsedMessage)){
+                if(this.triggersList[j].matches(msg, parsedMessage)){
                     return this.triggersList[j].run(msg,client);
                 }
             }
         }
     }
 
-    command(commandString:string, commandFunction:Function){
-        this.commandsList.push(new Command(commandString, commandFunction));
+    command(commandString:string, ...middlewares:any) : Command {
+        console.log("Middlewares in Command Manager",middlewares);
+        let newLength=this.commandsList.push(new Command(commandString, middlewares));
+        return this.commandsList[newLength-1];
     }
 
-    trigger(triggerMatchingFunction:Function, triggerFunction:Function){
-        this.triggersList.push(new Trigger(triggerMatchingFunction, triggerFunction));
+    trigger(triggerMatchingFunction:Function, triggerFunction:Function) : Trigger {
+        let newLength=this.triggersList.push(new Trigger(triggerMatchingFunction, triggerFunction));
+        return this.triggersList[newLength-1];
     }
 
     shouldTrigger() : boolean{
@@ -64,7 +66,7 @@ class CommandManager{
     }
 
     parseMessage(commandText:string) : string{
-        return replaceSpacesWithSlashes(this.removePrefixFromMessage(commandText));
+        return this.removePrefixFromMessage(commandText);
     }
 
     removePrefixFromMessage(commandText:string){

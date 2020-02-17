@@ -8,9 +8,9 @@ declare class CommandManager {
     constructor();
     setTriggerRate(newTriggerRate: number): void;
     setPrefix(newPrefix: string): void;
-    handleMessage(msg: any, client: any): any;
-    command(commandString: string, commandFunction: Function): void;
-    trigger(triggerMatchingFunction: Function, triggerFunction: Function): void;
+    handleMessage(msg: any, client: any, next: any): any;
+    command(commandString: string, ...middlewares: any): Command;
+    trigger(triggerMatchingFunction: Function, triggerFunction: Function): Trigger;
     shouldTrigger(): boolean;
     hasPrefix(): boolean;
     parseMessage(commandText: string): string;

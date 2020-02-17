@@ -6,8 +6,8 @@ class Trigger extends AbstractCommand_1.AbstractCommand {
         super(triggerFunction);
         this.triggerMatchingFunction = triggerMatchingFunction;
     }
-    matches(commandText) {
-        return this.triggerMatchingFunction(commandText);
+    matches(msg, parsedCommandText) {
+        return this.triggerMatchingFunction(parsedCommandText) && !msg.author.bot;
     }
     run(msg, client) {
         return this.runFunction(msg, client);

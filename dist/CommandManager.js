@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = require("./Command");
 const Trigger_1 = require("./Trigger");
-const utils_1 = require("./utils");
 class CommandManager {
     constructor() {
         this.commandsList = new Array();
@@ -24,28 +23,31 @@ class CommandManager {
     setPrefix(newPrefix) {
         newPrefix === undefined || this.prefix === null ? this.prefix = "" : this.prefix = newPrefix;
     }
-    handleMessage(msg, client) {
+    handleMessage(msg, client, next) {
         //check for commands
         const parsedMessage = this.parseMessage(msg.content);
         for (let i = 0; i < this.commandsList.length; i++) {
-            if (this.commandsList[i].matches(parsedMessage)) {
-                return this.commandsList[i].run(msg, client);
+            if (this.commandsList[i].matches(msg, parsedMessage)) {
+                return this.commandsList[i].run(msg, client, next);
             }
         }
         //check for triggers
         if (this.shouldTrigger()) {
             for (let j = 0; j < this.triggersList.length; j++) {
-                if (this.triggersList[j].matches(parsedMessage)) {
+                if (this.triggersList[j].matches(msg, parsedMessage)) {
                     return this.triggersList[j].run(msg, client);
                 }
             }
         }
     }
-    command(commandString, commandFunction) {
-        this.commandsList.push(new Command_1.Command(commandString, commandFunction));
+    command(commandString, ...middlewares) {
+        console.log("Middlewares in Command Manager", middlewares);
+        let newLength = this.commandsList.push(new Command_1.Command(commandString, middlewares));
+        return this.commandsList[newLength - 1];
     }
     trigger(triggerMatchingFunction, triggerFunction) {
-        this.triggersList.push(new Trigger_1.Trigger(triggerMatchingFunction, triggerFunction));
+        let newLength = this.triggersList.push(new Trigger_1.Trigger(triggerMatchingFunction, triggerFunction));
+        return this.triggersList[newLength - 1];
     }
     shouldTrigger() {
         return this.triggerRate <= randomBetween(0, 100);
@@ -54,7 +56,7 @@ class CommandManager {
         return this.prefix !== "";
     }
     parseMessage(commandText) {
-        return utils_1.replaceSpacesWithSlashes(this.removePrefixFromMessage(commandText));
+        return this.removePrefixFromMessage(commandText);
     }
     removePrefixFromMessage(commandText) {
         return this.hasPrefix() ? commandText.replace(this.prefix, "") : commandText;

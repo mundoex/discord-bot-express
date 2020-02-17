@@ -1,27 +1,43 @@
 import {match, MatchFunction} from "path-to-regexp";
 import { AbstractCommand } from "./AbstractCommand";
-import { replaceSpacesWithSlashes } from "./utils";
+import { MiddlewareHandler } from "./tests/Middlewarehandler";
 
 export class Command extends AbstractCommand{
     commandString:string;
     matchFunction:MatchFunction;
     params:any;
-
-    constructor(commandString:string, commandFunction:Function){
-        super(commandFunction);
-        needsReplace(commandString) ? this.commandString=replaceSpacesWithSlashes(commandString) : this.commandString=commandString;
+    description:string;
+    middlewareHandler:MiddlewareHandler;
+        /*
+        Pops the last element of the middlewares
+        The last element is the function that is going to be the runFunction
+        Adds the remaining functions that are the actual middlewares to the middlewares handler
+        */
+    constructor(commandString:string, middlewares:Function[]){
+        super(middlewares.pop());
+        this.commandString=commandString;
         this.matchFunction=match(this.commandString);
         this.params=undefined;
+        this.description="";
+        this.middlewareHandler=new MiddlewareHandler();
+        middlewares.forEach(middleware=>this.middlewareHandler.use(middleware));
     }
 
-    matches(commandText:string){
-        let result=this.matchFunction(commandText);
-        result!==false ? this.params=result.params : this.params=undefined;
+    matches(msg:any,parsedCommandText:string){
+        let result=this.matchFunction(parsedCommandText);
+        result!==false && !msg.author.bot ? this.params=result.params : this.params=undefined;
         return this.params!==undefined;
     }
 
-    run(msg:any, client:any){
-        return this.runFunction(msg, client, this.params);
+    run(msg:any, client:any, params:any) : any{
+        return this.middlewareHandler.handle(msg,client,params,(msg:any,client:any,params:any)=>{
+            params=this.params;
+            return this.runFunction(msg,client,params);
+        });
+    }
+
+    setDescription(description:string){
+        this.description=description;
     }
 }
 
