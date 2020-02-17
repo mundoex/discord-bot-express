@@ -28,36 +28,34 @@ class CommandManager {
     use(middlewareFunction) {
         this.middlewareHandler.use(middlewareFunction);
     }
-    checkForMatches(msg, client, parsedMessage, tokens) {
+    checkForMatches(msg, client, tokens) {
         //check for commands
         for (let i = 0; i < this.commandsList.length; i++) {
-            if (this.commandsList[i].matches(msg, parsedMessage)) {
+            if (this.commandsList[i].matches(msg, msg.content)) {
                 return this.commandsList[i].run(msg, client, tokens);
             }
         }
         //check for triggers
         if (this.shouldTrigger()) {
             for (let j = 0; j < this.triggersList.length; j++) {
-                if (this.triggersList[j].matches(msg, parsedMessage)) {
+                if (this.triggersList[j].matches(msg, msg.content)) {
                     return this.triggersList[j].run(msg, client, tokens);
                 }
             }
         }
     }
     /*
-    If message as prefix
     create variable without prefix
     create variable with the message split into tokens so each middleware call doesnt have to tokenize the message
     */
     handleMessage(msg, client) {
-        const parsedMessage = this.parseMessage(msg.content);
-        const tokens = parsedMessage.split(" ");
+        const tokens = msg.content.split(" ");
         return this.middlewareHandler.handle(msg, client, tokens, (msgFromMiddleware, clientFromMiddleware, params) => {
-            return this.checkForMatches(msgFromMiddleware, clientFromMiddleware, parsedMessage, params);
+            return this.checkForMatches(msgFromMiddleware, clientFromMiddleware, params);
         });
     }
     command(commandString, ...middlewares) {
-        let newLength = this.commandsList.push(new Command_1.Command(commandString, middlewares));
+        let newLength = this.commandsList.push(new Command_1.Command(this.prefix + commandString, middlewares));
         return this.commandsList[newLength - 1];
     }
     trigger(triggerMatchingFunction, ...middlewares) {

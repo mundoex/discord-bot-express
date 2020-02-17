@@ -35,17 +35,17 @@ class CommandManager{
         this.middlewareHandler.use(middlewareFunction);
     }
 
-    checkForMatches(msg:any,client:any,parsedMessage:string,tokens:Array<string>){
+    checkForMatches(msg:any,client:any,tokens:Array<string>){
         //check for commands
         for(let i=0;i<this.commandsList.length;i++){
-            if(this.commandsList[i].matches(msg, parsedMessage)){
+            if(this.commandsList[i].matches(msg, msg.content)){
                 return this.commandsList[i].run(msg,client,tokens);
             }
         }
         //check for triggers
         if(this.shouldTrigger()){
             for(let j=0;j<this.triggersList.length;j++){
-                if(this.triggersList[j].matches(msg, parsedMessage)){
+                if(this.triggersList[j].matches(msg, msg.content)){
                     return this.triggersList[j].run(msg,client,tokens);
                 }
             }
@@ -53,21 +53,19 @@ class CommandManager{
     }
 
     /*
-    If message as prefix
     create variable without prefix
     create variable with the message split into tokens so each middleware call doesnt have to tokenize the message
     */
     handleMessage(msg:any, client:any){
-        const parsedMessage=this.parseMessage(msg.content);
-        const tokens=parsedMessage.split(" ");
+        const tokens=msg.content.split(" ");
         return this.middlewareHandler.handle(msg,client,tokens,
-            (msgFromMiddleware:any,clientFromMiddleware:any,params:any)=>{
-                return this.checkForMatches(msgFromMiddleware,clientFromMiddleware,parsedMessage,params);
+            (msgFromMiddleware:any,clientFromMiddleware:any,params:any)=>{  
+                return this.checkForMatches(msgFromMiddleware,clientFromMiddleware,params);
             });
     }
 
     command(commandString:string, ...middlewares:Array<Function>) : Command {
-        let newLength=this.commandsList.push(new Command(commandString, middlewares));
+        let newLength=this.commandsList.push(new Command(this.prefix+commandString, middlewares));
         return this.commandsList[newLength-1];
     }
 
@@ -106,12 +104,12 @@ class CommandManager{
 
     generateCommandListFile(){}
 
-    
-
 }
 
 function randomBetween(min:number, max:number){
     return Math.floor(Math.random() * max) + min;
 }
+
+
 
 export const CommandManagerInstance = new CommandManager();
