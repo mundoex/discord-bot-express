@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Command_1 = require("./Command");
 const Trigger_1 = require("./Trigger");
 const MiddlewareHandler_1 = require("./middlewares/MiddlewareHandler");
+const utils_1 = require("./utils");
 class CommandManager {
     constructor() {
         this.commandsList = new Array();
@@ -30,8 +31,9 @@ class CommandManager {
     }
     checkForMatches(msg, client, tokens) {
         //check for commands
+        const slashedMsgContent = utils_1.replaceSpacesWithSlashes(msg.content);
         for (let i = 0; i < this.commandsList.length; i++) {
-            if (this.commandsList[i].matches(msg, msg.content)) {
+            if (this.commandsList[i].matches(msg, slashedMsgContent)) {
                 return this.commandsList[i].run(msg, client, tokens);
             }
         }
@@ -55,7 +57,8 @@ class CommandManager {
         });
     }
     command(commandString, ...middlewares) {
-        let newLength = this.commandsList.push(new Command_1.Command(this.prefix + commandString, middlewares));
+        const slashedCommandString = utils_1.replaceSpacesWithSlashes(this.prefix + commandString);
+        let newLength = this.commandsList.push(new Command_1.Command(slashedCommandString, middlewares));
         return this.commandsList[newLength - 1];
     }
     trigger(triggerMatchingFunction, ...middlewares) {

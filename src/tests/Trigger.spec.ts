@@ -1,0 +1,4 @@
+//startswith
+//endswith
+//includes
+//regex

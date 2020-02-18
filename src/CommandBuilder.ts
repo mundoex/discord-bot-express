@@ -1,4 +1,3 @@
-import {replaceSpacesWithSlashes} from "./utils";
 export class CommandBuilder{
     static Arg(argName:string) : string{
         return `:${argName}`

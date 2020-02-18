@@ -1,7 +1,7 @@
 {
   "name": "discord-bot-express",
   "version": "1.0.0",
-  "description": "",
+  "description": "Discord Bot Framework for managing commands",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,8 +10,8 @@
     "build": "tsc",
     "test": "npm run build && jasmine --reporter=jasmine-console-reporter --config=jasmine.json"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "https://github.com/mundoex",
+  "license": "MIT",
   "dependencies": {
     "path-to-regexp": "^6.1.0"
   },

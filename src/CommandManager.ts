@@ -1,7 +1,7 @@
 import { Command } from "./Command";
 import { Trigger } from "./Trigger";
 import { MiddlewareHandler } from "./middlewares/MiddlewareHandler";
-
+import {replaceSpacesWithSlashes} from "./utils";
 class CommandManager{
     commandsList:Array<Command>;
     triggersList:Array<Trigger>;
@@ -37,8 +37,9 @@ class CommandManager{
 
     checkForMatches(msg:any,client:any,tokens:Array<string>){
         //check for commands
+        const slashedMsgContent=replaceSpacesWithSlashes(msg.content);
         for(let i=0;i<this.commandsList.length;i++){
-            if(this.commandsList[i].matches(msg, msg.content)){
+            if(this.commandsList[i].matches(msg, slashedMsgContent)){
                 return this.commandsList[i].run(msg,client,tokens);
             }
         }
@@ -65,7 +66,8 @@ class CommandManager{
     }
 
     command(commandString:string, ...middlewares:Array<Function>) : Command {
-        let newLength=this.commandsList.push(new Command(this.prefix+commandString, middlewares));
+        const slashedCommandString=replaceSpacesWithSlashes(this.prefix+commandString);
+        let newLength=this.commandsList.push(new Command(slashedCommandString, middlewares));
         return this.commandsList[newLength-1];
     }
 
