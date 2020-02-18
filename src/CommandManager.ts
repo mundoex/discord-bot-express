@@ -45,11 +45,10 @@ class CommandManager{
             }
         }
         //check for triggers
-        var noPrefixMsgContent=this.removePrefixFromMessage(msg.content);
         if(this.shouldTrigger()){
             for(let j=0;j<this.triggersList.length;j++){
-                if(this.triggersList[j].matches(noPrefixMsgContent)){
-                    return this.triggersList[j].run(msg,client,tokens);
+                if(this.triggersList[j].matches(msg.content)){
+                    this.triggersList[j].run(msg,client,tokens);
                 }
             }
         }
@@ -67,7 +66,7 @@ class CommandManager{
     }
 
     command(commandString:string, ...middlewares:Array<Function>) : Command {
-        const builtCommand=Build(commandString);
+        const builtCommand=Build(this.prefix+commandString);
         let newLength=this.commandsList.push(new Command(builtCommand, middlewares));
         return this.commandsList[newLength-1];
     }
@@ -78,7 +77,7 @@ class CommandManager{
     }
 
     shouldTrigger() : boolean{
-        return this.triggerRate<=randomBetween(0,100);
+        return this.triggerRate>=randomBetween(0,100);
     }
 
     hasPrefix(){

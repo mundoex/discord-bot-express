@@ -39,11 +39,10 @@ class CommandManager {
             }
         }
         //check for triggers
-        var noPrefixMsgContent = this.removePrefixFromMessage(msg.content);
         if (this.shouldTrigger()) {
             for (let j = 0; j < this.triggersList.length; j++) {
-                if (this.triggersList[j].matches(noPrefixMsgContent)) {
-                    return this.triggersList[j].run(msg, client, tokens);
+                if (this.triggersList[j].matches(msg.content)) {
+                    this.triggersList[j].run(msg, client, tokens);
                 }
             }
         }
@@ -58,7 +57,7 @@ class CommandManager {
         });
     }
     command(commandString, ...middlewares) {
-        const builtCommand = CommandBuilder_1.Build(commandString);
+        const builtCommand = CommandBuilder_1.Build(this.prefix + commandString);
         let newLength = this.commandsList.push(new Command_1.Command(builtCommand, middlewares));
         return this.commandsList[newLength - 1];
     }
@@ -67,7 +66,7 @@ class CommandManager {
         return this.triggersList[newLength - 1];
     }
     shouldTrigger() {
-        return this.triggerRate <= randomBetween(0, 100);
+        return this.triggerRate >= randomBetween(0, 100);
     }
     hasPrefix() {
         return this.prefix !== "";
