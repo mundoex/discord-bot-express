@@ -12,6 +12,10 @@
     "test": "npm run build && jasmine --reporter=jasmine-console-reporter --config=jasmine.json"
   },
   "author": "https://github.com/mundoex",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mundoex/discord-bot-express.git"
+  },
   "license": "MIT",
   "dependencies": {
     "path-to-regexp": "^6.1.0"
