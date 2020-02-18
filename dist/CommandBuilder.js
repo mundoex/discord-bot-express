@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const utils_1 = require("./utils");
 class CommandBuilder {
     static Arg(argName) {
         return `:${argName}`;
@@ -12,3 +13,7 @@ class CommandBuilder {
     }
 }
 exports.CommandBuilder = CommandBuilder;
+function Build(commandText) {
+    return utils_1.replaceSpacesWithSlashes(commandText);
+}
+exports.Build = Build;

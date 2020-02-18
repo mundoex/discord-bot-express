@@ -6,7 +6,7 @@ class Trigger extends AbstractCommand_1.AbstractCommand {
         super(middlewares);
         this.triggerMatchingFunction = triggerMatchingFunction;
     }
-    matches(msg, parsedCommandText) {
+    matches(parsedCommandText) {
         return this.triggerMatchingFunction(parsedCommandText);
     }
     run(msg, client, params) {

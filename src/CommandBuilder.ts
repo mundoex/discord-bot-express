@@ -1,3 +1,5 @@
+import {replaceSpacesWithSlashes} from "./utils";
+
 export class CommandBuilder{
     static Arg(argName:string) : string{
         return `:${argName}`
@@ -10,4 +12,9 @@ export class CommandBuilder{
     static Optional(optName:string) : string{
         return `:${optName}?`;
     }
+
+} 
+
+export function Build(commandText:string) : string{
+    return replaceSpacesWithSlashes(commandText);
 }

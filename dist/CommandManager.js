@@ -4,6 +4,7 @@ const Command_1 = require("./Command");
 const Trigger_1 = require("./Trigger");
 const MiddlewareHandler_1 = require("./middlewares/MiddlewareHandler");
 const utils_1 = require("./utils");
+const CommandBuilder_1 = require("./CommandBuilder");
 class CommandManager {
     constructor() {
         this.commandsList = new Array();
@@ -33,21 +34,21 @@ class CommandManager {
         //check for commands
         const slashedMsgContent = utils_1.replaceSpacesWithSlashes(msg.content);
         for (let i = 0; i < this.commandsList.length; i++) {
-            if (this.commandsList[i].matches(msg, slashedMsgContent)) {
+            if (this.commandsList[i].matches(slashedMsgContent)) {
                 return this.commandsList[i].run(msg, client, tokens);
             }
         }
         //check for triggers
+        var noPrefixMsgContent = this.removePrefixFromMessage(msg.content);
         if (this.shouldTrigger()) {
             for (let j = 0; j < this.triggersList.length; j++) {
-                if (this.triggersList[j].matches(msg, msg.content)) {
+                if (this.triggersList[j].matches(noPrefixMsgContent)) {
                     return this.triggersList[j].run(msg, client, tokens);
                 }
             }
         }
     }
     /*
-    create variable without prefix
     create variable with the message split into tokens so each middleware call doesnt have to tokenize the message
     */
     handleMessage(msg, client) {
@@ -57,8 +58,8 @@ class CommandManager {
         });
     }
     command(commandString, ...middlewares) {
-        const slashedCommandString = utils_1.replaceSpacesWithSlashes(this.prefix + commandString);
-        let newLength = this.commandsList.push(new Command_1.Command(slashedCommandString, middlewares));
+        const builtCommand = CommandBuilder_1.Build(commandString);
+        let newLength = this.commandsList.push(new Command_1.Command(builtCommand, middlewares));
         return this.commandsList[newLength - 1];
     }
     trigger(triggerMatchingFunction, ...middlewares) {
@@ -77,14 +78,6 @@ class CommandManager {
     removePrefixFromMessage(commandText) {
         return this.hasPrefix() ? commandText.replace(this.prefix, "") : commandText;
     }
-    addDefaultHelper() {
-    }
-    addListAll() {
-    }
-    commandAlreadyExists() {
-        return true;
-    }
-    generateCommandListFile() { }
 }
 function randomBetween(min, max) {
     return Math.floor(Math.random() * max) + min;

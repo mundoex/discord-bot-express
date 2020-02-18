@@ -19,10 +19,6 @@ declare class CommandManager {
     hasPrefix(): boolean;
     parseMessage(commandText: string): string;
     removePrefixFromMessage(commandText: string): string;
-    addDefaultHelper(): void;
-    addListAll(): void;
-    commandAlreadyExists(): boolean;
-    generateCommandListFile(): void;
 }
 export declare const CommandManagerInstance: CommandManager;
 export {};

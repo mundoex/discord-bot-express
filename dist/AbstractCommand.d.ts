@@ -4,7 +4,9 @@ import { MiddlewareHandler } from "./middlewares/MiddlewareHandler";
 export declare abstract class AbstractCommand implements IRunnable, IMatchable {
     runFunction: Function;
     middlewareHandler: MiddlewareHandler;
+    description: string;
     constructor(middlewares: Function[]);
+    setDescription(description: string): void;
     abstract run(msg: any, client: any, params: any): any;
-    abstract matches(msg: any, commandText: string): boolean;
+    abstract matches(commandText: string): boolean;
 }

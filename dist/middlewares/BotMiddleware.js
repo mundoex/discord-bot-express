@@ -6,4 +6,3 @@ class BotMiddleware {
     }
 }
 exports.BotMiddleware = BotMiddleware;
-BotMiddleware.BAD_WORDS = ["retarded", "nigger", "faggot", "retard"];

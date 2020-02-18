@@ -1,3 +1,3 @@
 export interface IMatchable{
-    matches(msg:any,parsedCommandText:string) : boolean;
+    matches(parsedCommandText:string) : boolean;
 }

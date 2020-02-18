@@ -5,12 +5,24 @@ import { MiddlewareHandler } from "./middlewares/MiddlewareHandler";
 export abstract class AbstractCommand implements IRunnable,IMatchable{
     runFunction:Function;
     middlewareHandler:MiddlewareHandler;
+    description:string;
+
+    /*
+        Pops the last element of the middlewares
+        The last element is the function that is going to be the runFunction
+        Adds the remaining functions that are the actual middlewares to the middlewares handler
+    */
     constructor(middlewares:Function[]){
         this.runFunction=middlewares.pop();
         this.middlewareHandler=new MiddlewareHandler();
         middlewares.forEach(middleware=>this.middlewareHandler.use(middleware));
+        this.description="";
+    }
+
+    setDescription(description:string){
+        this.description=description;
     }
 
     abstract run(msg: any, client: any, params:any) : any;
-    abstract matches(msg:any,commandText: string): boolean;
+    abstract matches(commandText: string): boolean;
 }

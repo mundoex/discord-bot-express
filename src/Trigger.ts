@@ -8,7 +8,7 @@ export class Trigger extends AbstractCommand{
         this.triggerMatchingFunction=triggerMatchingFunction;
     }
 
-    matches(msg:any, parsedCommandText:string) : boolean{
+    matches(parsedCommandText:string) : boolean{
         return this.triggerMatchingFunction(parsedCommandText);
     }
 

@@ -46,6 +46,7 @@ client.on("message",msg=>CommandManager.handleMessage(msg, client));
   * Simple command creation and organization
   * Simple trigger word creation and organization
   * Middleware pattern for modular command pipeline
+  * Create your own middlewares and plug them in
 
 ## Usage
 
@@ -58,7 +59,7 @@ $ git clone https://github.com/mundoex/discord-bot-express
 $ npm install
 ```
 Make a pull request with your changes <br>
-Contributions are welcome :)
+Contributions and features request are welcome :)
 
 ## License
 [MIT](LICENSE)
