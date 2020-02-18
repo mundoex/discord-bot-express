@@ -4,6 +4,7 @@
   "description": "Discord Bot Framework for managing commands",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "keywords": ["discord","bot","framework","express","commands","simple","discord bot"],
   "scripts": {
     "start": "npm run build && node dist/index.js",
     "prepublish": "npm test",
