@@ -6,6 +6,7 @@ export abstract class AbstractCommand implements IRunnable,IMatchable{
     runFunction:Function;
     middlewareHandler:MiddlewareHandler;
     description:string;
+    usage:string;
 
     /*
         Pops the last element of the middlewares
@@ -21,6 +22,12 @@ export abstract class AbstractCommand implements IRunnable,IMatchable{
 
     setDescription(description:string){
         this.description=description;
+        return this;
+    }
+
+    setUsage(usage:string){
+        this.usage=usage;
+        return this;
     }
 
     abstract run(msg: any, client: any, params:any) : any;

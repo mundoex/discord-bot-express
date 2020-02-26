@@ -15,6 +15,11 @@ class AbstractCommand {
     }
     setDescription(description) {
         this.description = description;
+        return this;
+    }
+    setUsage(usage) {
+        this.usage = usage;
+        return this;
     }
 }
 exports.AbstractCommand = AbstractCommand;

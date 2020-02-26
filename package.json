@@ -9,7 +9,8 @@
     "start": "npm run build && node dist/index.js",
     "prepublish": "npm test",
     "build": "tsc",
-    "test": "npm run build && jasmine --reporter=jasmine-console-reporter --config=jasmine.json"
+    "test": "npm run build && jasmine --reporter=jasmine-console-reporter --config=jasmine.json",
+    "console-test": "npm run build && node dist/test.js"
   },
   "author": "https://github.com/mundoex",
   "repository": {
