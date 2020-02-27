@@ -63,11 +63,16 @@ describe(">CommandInterpreter Tests", function() {
     });
 
     it("CommandInterpreter 8",function() {
-        var cmdString="8ball shake *times";
+        var cmdString="8ball shake :times";
         var text="8ball shake";
         var params=CommandInterpreter.interprete(cmdString,text);
-        expect(params).toBeDefined();
-        expect(params.shake).toBeUndefined();
+        expect(params).toBeUndefined();
+    });
 
+    it("CommandInterpreter 9",function() {
+        var cmdString="8ball shake again";
+        var text="8ball shake";
+        var params=CommandInterpreter.interprete(cmdString,text);
+        expect(params).toBeUndefined();
     });
 });
