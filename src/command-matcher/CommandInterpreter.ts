@@ -11,7 +11,7 @@ export class CommandInterpreter{
         return CommandInterpreter.handle(tokens,cmdWords,params);
     }
     //Recursive parsing of commands
-    static handle(tokens:Array<string>, stack:Array<CommandWord>, params:any) : any{
+    private static handle(tokens:Array<string>, stack:Array<CommandWord>, params:any) : any{
         if(tokens.length===0 && stack.length===0){  //return params when there are no more tokens and didnt return undefined
             return params;
         }else{
@@ -25,7 +25,7 @@ export class CommandInterpreter{
         }
     }
 
-    static generateParams(cmdWords:Array<CommandWord>) : any {
+    private static generateParams(cmdWords:Array<CommandWord>) : any {
         var params:any={};
         cmdWords.forEach(cmdWord=>{
            switch(cmdWord.type){
@@ -93,14 +93,19 @@ export class CommandInterpreter{
                 params[cmdWords[0].word]=tokens.shift();  //assign param
                 cmdWords.shift();
                 return CommandInterpreter.handle(tokens,cmdWords,params);
-            }else{  //if next cmdWord matches token 
+            }else{  //if next cmdWord matches token
                 cmdWords.shift();
                 return CommandInterpreter.handle(tokens,cmdWords,params);
             }
         }else{  //if there is no next cmdWord
-            params[cmdWords[0].word]=tokens.shift();
-            cmdWords.shift();
-            return CommandInterpreter.handle(tokens,cmdWords,params);
+            if(tokens.length===0){
+                cmdWords.shift();
+                return CommandInterpreter.handle(tokens,cmdWords,params);
+            }else{
+                params[cmdWords[0].word]=tokens.shift();
+                cmdWords.shift();
+                return CommandInterpreter.handle(tokens,cmdWords,params);
+            }
         }
     }
     

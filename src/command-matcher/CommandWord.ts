@@ -7,7 +7,8 @@ export class CommandWord{
     private static readonly ARG_PREFIX=":";
     private static readonly OPT_PREFIX="?";
     private static readonly MULTI_SUFFIX="*";
-
+    static DELIMITTER=" ";
+    
     constructor(word:string, type:WordType){
         this.word=word;
         this.type=type;

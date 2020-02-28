@@ -1,5 +1,5 @@
 import "jasmine";
-import {CommandInterpreter} from "../command-manager/CommandInterpreter";
+import {CommandInterpreter} from "../command-matcher/CommandInterpreter";
 describe(">CommandInterpreter Tests", function() {
 
     it("CommandInterpreter 1",function() {
@@ -74,5 +74,34 @@ describe(">CommandInterpreter Tests", function() {
         var text="8ball shake";
         var params=CommandInterpreter.interprete(cmdString,text);
         expect(params).toBeUndefined();
+    });
+
+    it("CommandInterpreter 10",function() {
+        var cmdString="youtube play :link";
+        var text="youtube play https://www.youtube.com/watch?v=yCwqigzvhj8";
+        var params=CommandInterpreter.interprete(cmdString,text);
+        expect(params).toBeDefined();
+        expect(params.link).toEqual("https://www.youtube.com/watch?v=yCwqigzvhj8");
+    });
+
+    it("CommandInterpreter 11",function() {
+        var cmdString="hello world";
+        let text="hello world";
+        var params=CommandInterpreter.interprete(cmdString,text);
+        expect(params).toBeDefined();
+    });
+
+    it("CommandInterpreter 12",function() {
+        var cmdString="hello world";
+        let text="world hello";
+        var params=CommandInterpreter.interprete(cmdString,text);
+        expect(params).toBeUndefined();
+    });
+
+    it("CommandInterpreter 13",function() {
+        var cmdString="travel ?city";
+        let text="travel";
+        var params=CommandInterpreter.interprete(cmdString,text);
+        expect(params).toBeDefined();
     });
 });

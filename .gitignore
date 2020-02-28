@@ -1,2 +1,5 @@
 node_modules
 dist/tests
+dist/test.js
+dist/test.d.ts
+src/test.ts

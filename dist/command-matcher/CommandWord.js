@@ -31,4 +31,4 @@ exports.CommandWord = CommandWord;
 CommandWord.ARG_PREFIX = ":";
 CommandWord.OPT_PREFIX = "?";
 CommandWord.MULTI_SUFFIX = "*";
-CommandWord.DELIMITTER = "";
+CommandWord.DELIMITTER = " ";

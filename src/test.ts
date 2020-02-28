@@ -1,11 +1,15 @@
-import { CommandInterpreter } from "./command-manager/CommandInterpreter";
-
-var cmdString="8ball shake :times";
-var text="8ball shake";
-var params=CommandInterpreter.interprete(cmdString,text);
-console.log("Test1",params);
-
-var cmdString="8ball shake again";
-var text="8ball shake";
-var params=CommandInterpreter.interprete(cmdString,text);
-console.log("Test2",params);
+import { CommandInterpreter } from "./command-matcher/CommandInterpreter";
+import { Command } from "./Command";
+let commandOpt=new Command("drive ?velocity",[()=>console.log("Q")]);
+let messageTrue="drive";
+let messageFalse="dont drive";
+let messageTrue2="drive fastAF";
+console.log("RES1");
+var res1=commandOpt.matches(messageTrue);
+console.log("RES2");
+var res2=commandOpt.matches(messageFalse);
+console.log("RES3");
+var res3=commandOpt.matches(messageTrue2);
+console.log("PARAMS");
+var params=commandOpt.params.velocity;
+console.log(res1,res2,res3,params);

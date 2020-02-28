@@ -1,8 +1,8 @@
 import { Command } from "./Command";
 import { Trigger } from "./Trigger";
 import { MiddlewareHandler } from "./middlewares/MiddlewareHandler";
-import {replaceSpacesWithSlashes} from "./utils";
-import { Build } from "./CommandBuilder";
+import { randomBetween } from "./utils";
+
 class CommandManager{
     commandsList:Array<Command>;
     triggersList:Array<Trigger>;
@@ -38,9 +38,8 @@ class CommandManager{
 
     checkForMatches(msg:any,client:any,tokens:Array<string>){
         //check for commands
-        const slashedMsgContent=replaceSpacesWithSlashes(msg.content);
         for(let i=0;i<this.commandsList.length;i++){
-            if(this.commandsList[i].matches(slashedMsgContent)){
+            if(this.commandsList[i].matches(msg.content)){
                 return this.commandsList[i].run(msg,client,tokens);
             }
         }
@@ -66,7 +65,7 @@ class CommandManager{
     }
 
     command(commandString:string, ...middlewares:Array<Function>) : Command {
-        const builtCommand=Build(this.prefix+commandString);
+        const builtCommand=this.prefix+commandString;
         let newLength=this.commandsList.push(new Command(builtCommand, middlewares));
         return this.commandsList[newLength-1];
     }
@@ -84,17 +83,9 @@ class CommandManager{
         return this.prefix!=="";
     }
 
-    parseMessage(commandText:string) : string{
-        return this.removePrefixFromMessage(commandText);
-    }
-
     removePrefixFromMessage(commandText:string){
         return this.hasPrefix() ? commandText.replace(this.prefix,"") : commandText;
     }
-}
-
-function randomBetween(min:number, max:number){
-    return Math.floor(Math.random() * max) + min;
 }
 
 export const CommandManagerInstance = new CommandManager();
