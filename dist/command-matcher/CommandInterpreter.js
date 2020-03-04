@@ -15,12 +15,16 @@ class CommandInterpreter {
             return params;
         }
         else {
+            if (stack[0] === undefined) {
+                return undefined;
+            }
             switch (stack[0].type) {
                 case WordType_1.WordType.Word: return CommandInterpreter.handleWord(tokens, stack, params);
                 case WordType_1.WordType.Arg: return CommandInterpreter.handleArg(tokens, stack, params);
                 case WordType_1.WordType.Args: return CommandInterpreter.handleArgs(tokens, stack, params);
                 case WordType_1.WordType.Opt: return CommandInterpreter.handleOpt(tokens, stack, params);
                 case WordType_1.WordType.Opts: return CommandInterpreter.handleOpts(tokens, stack, params);
+                default: return undefined;
             }
         }
     }

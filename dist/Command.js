@@ -1,16 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const AbstractCommand_1 = require("./AbstractCommand");
-const CommandMatcher_1 = require("./command-matcher/CommandMatcher");
+const CommandInterpreter_1 = require("./command-matcher/CommandInterpreter");
 class Command extends AbstractCommand_1.AbstractCommand {
     constructor(commandString, middlewares) {
         super(middlewares);
         this.commandString = commandString;
-        this.commandMatcher = new CommandMatcher_1.CommandMatcher(commandString);
         this.params = undefined;
     }
     matches(userInputText) {
-        let result = this.commandMatcher.match(userInputText);
+        let result = CommandInterpreter_1.CommandInterpreter.interprete(this.commandString, userInputText);
         this.params = result;
         return result !== undefined;
     }

@@ -15,12 +15,14 @@ export class CommandInterpreter{
         if(tokens.length===0 && stack.length===0){  //return params when there are no more tokens and didnt return undefined
             return params;
         }else{
+            if(stack[0]===undefined){ return undefined;}
             switch(stack[0].type){
                 case WordType.Word: return CommandInterpreter.handleWord(tokens, stack, params);
                 case WordType.Arg: return CommandInterpreter.handleArg(tokens, stack, params);
                 case WordType.Args: return CommandInterpreter.handleArgs(tokens, stack, params);
                 case WordType.Opt: return CommandInterpreter.handleOpt(tokens, stack, params);
                 case WordType.Opts: return CommandInterpreter.handleOpts(tokens, stack, params);
+                default : return undefined;
             }
         }
     }

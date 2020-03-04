@@ -17,7 +17,6 @@ declare class CommandManager {
     trigger(triggerMatchingFunction: Function, ...middlewares: Array<Function>): Trigger;
     shouldTrigger(): boolean;
     hasPrefix(): boolean;
-    parseMessage(commandText: string): string;
     removePrefixFromMessage(commandText: string): string;
 }
 export declare const CommandManagerInstance: CommandManager;

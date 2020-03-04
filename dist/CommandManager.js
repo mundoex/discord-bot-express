@@ -4,7 +4,6 @@ const Command_1 = require("./Command");
 const Trigger_1 = require("./Trigger");
 const MiddlewareHandler_1 = require("./middlewares/MiddlewareHandler");
 const utils_1 = require("./utils");
-const CommandBuilder_1 = require("./CommandBuilder");
 class CommandManager {
     constructor() {
         this.commandsList = new Array();
@@ -31,14 +30,16 @@ class CommandManager {
         this.middlewareHandler.use(middlewareFunction);
     }
     checkForMatches(msg, client, tokens) {
-        //check for commands
-        const slashedMsgContent = utils_1.replaceSpacesWithSlashes(msg.content);
-        for (let i = 0; i < this.commandsList.length; i++) {
-            if (this.commandsList[i].matches(slashedMsgContent)) {
-                return this.commandsList[i].run(msg, client, tokens);
+        //check for commands if there is prefix
+        if (msg.content.startsWith(this.prefix)) {
+            msg.content = msg.content.replace(this.prefix, "");
+            for (let i = 0; i < this.commandsList.length; i++) {
+                if (this.commandsList[i].matches(msg.content)) {
+                    return this.commandsList[i].run(msg, client, tokens);
+                }
             }
         }
-        //check for triggers
+        //check triggers
         if (this.shouldTrigger()) {
             for (let j = 0; j < this.triggersList.length; j++) {
                 if (this.triggersList[j].matches(msg.content)) {
@@ -57,8 +58,7 @@ class CommandManager {
         });
     }
     command(commandString, ...middlewares) {
-        const builtCommand = CommandBuilder_1.Build(this.prefix + commandString);
-        let newLength = this.commandsList.push(new Command_1.Command(builtCommand, middlewares));
+        let newLength = this.commandsList.push(new Command_1.Command(commandString, middlewares));
         return this.commandsList[newLength - 1];
     }
     trigger(triggerMatchingFunction, ...middlewares) {
@@ -66,19 +66,13 @@ class CommandManager {
         return this.triggersList[newLength - 1];
     }
     shouldTrigger() {
-        return this.triggerRate >= randomBetween(0, 100);
+        return this.triggerRate >= utils_1.randomBetween(0, 100);
     }
     hasPrefix() {
         return this.prefix !== "";
     }
-    parseMessage(commandText) {
-        return this.removePrefixFromMessage(commandText);
-    }
     removePrefixFromMessage(commandText) {
         return this.hasPrefix() ? commandText.replace(this.prefix, "") : commandText;
     }
-}
-function randomBetween(min, max) {
-    return Math.floor(Math.random() * max) + min;
 }
 exports.CommandManagerInstance = new CommandManager();

@@ -36,14 +36,19 @@ class CommandManager{
         this.middlewareHandler.use(middlewareFunction);
     }
 
-    checkForMatches(msg:any,client:any,tokens:Array<string>){
-        //check for commands
-        for(let i=0;i<this.commandsList.length;i++){
-            if(this.commandsList[i].matches(msg.content)){
-                return this.commandsList[i].run(msg,client,tokens);
+    private checkForMatches(msg:any,client:any,tokens:Array<string>){
+        //check for commands if there is prefix
+        if(msg.content.startsWith(this.prefix)){
+            msg.content=msg.content.replace(this.prefix,"");
+
+            for(let i=0;i<this.commandsList.length;i++){
+                if(this.commandsList[i].matches(msg.content)){
+                    return this.commandsList[i].run(msg,client,tokens);
+                }
             }
         }
-        //check for triggers
+
+        //check triggers
         if(this.shouldTrigger()){
             for(let j=0;j<this.triggersList.length;j++){
                 if(this.triggersList[j].matches(msg.content)){
@@ -51,6 +56,7 @@ class CommandManager{
                 }
             }
         }
+        
     }
 
     /*
@@ -65,8 +71,7 @@ class CommandManager{
     }
 
     command(commandString:string, ...middlewares:Array<Function>) : Command {
-        const builtCommand=this.prefix+commandString;
-        let newLength=this.commandsList.push(new Command(builtCommand, middlewares));
+        let newLength=this.commandsList.push(new Command(commandString, middlewares));
         return this.commandsList[newLength-1];
     }
 
