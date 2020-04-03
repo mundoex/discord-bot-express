@@ -17,8 +17,13 @@ CommandManager.setPrefix("Bot "); //Bot prefix not required
 CommandManager.use(NotABot); //Middleware that prevents bot from calling itself
 
 // :<name> defines a parameter for the command with the given name
-
-// :<name>? defines a optional parameter for the command with the given name
+CommandManager.command("tts :langCode", setLanguage);  //Example
+// :<name>* defines a multi-parameter for the command with the given name
+CommandManager.command("tts :text*", speak);  //Example
+// ?<name> defines a optional parameter for the command with the given name
+CommandManager.command("news ?day", news);  //Example
+// ?<name>* defines a multi-optional parameter for the command with the given name
+CommandManager.command("news ?withWords*", newsSearch);
 
 //With annonymous function
 CommandManager.command("pick :option1 or :option2", function(msg, client, params){

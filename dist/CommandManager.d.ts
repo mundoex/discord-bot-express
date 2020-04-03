@@ -11,7 +11,7 @@ declare class CommandManager {
     setTriggerRate(newTriggerRate: number): void;
     setPrefix(newPrefix: string): void;
     use(middlewareFunction: Function): void;
-    checkForMatches(msg: any, client: any, tokens: Array<string>): any;
+    private checkForMatches;
     handleMessage(msg: any, client: any): void;
     command(commandString: string, ...middlewares: Array<Function>): Command;
     trigger(triggerMatchingFunction: Function, ...middlewares: Array<Function>): Trigger;
