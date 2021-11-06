@@ -40,7 +40,6 @@ class CommandManager{
         //check for commands if there is prefix
         if(msg.content.startsWith(this.prefix)){
             msg.content=msg.content.replace(this.prefix,"");
-
             for(let i=0;i<this.commandsList.length;i++){
                 if(this.commandsList[i].matches(msg.content)){
                     return this.commandsList[i].run(msg,client,tokens);
@@ -61,12 +60,14 @@ class CommandManager{
 
     /*
     create variable with the message split into tokens so each middleware call doesnt have to tokenize the message
+    because of triggers we need to check for matches even without prefix
     */
     handleMessage(msg:any, client:any){
+        //if(!msg.content.startsWith(this.prefix)) return;
         const tokens=msg.content.split(" ");
         return this.middlewareHandler.handle(msg,client,tokens,
             (msgFromMiddleware:any,clientFromMiddleware:any,params:any)=>{  
-                return this.checkForMatches(msgFromMiddleware,clientFromMiddleware,params);
+                return this.checkForMatches(msgFromMiddleware, clientFromMiddleware, params);
         });
     }
 

@@ -1,4 +1,5 @@
 import "jasmine";
+
 import {Trigger} from "../Trigger";
 import {TriggerBuilder} from "../TriggerBuilder";
 describe(">Trigger Tests", function() {
@@ -10,8 +11,8 @@ describe(">Trigger Tests", function() {
         let messageFalse="world hello";
         expect(triggerStartsWith).toBeDefined();
         expect(triggerStartsWith).toBeInstanceOf(Trigger);
-        expect(triggerStartsWith.matches(messageTrue)).toBeTrue();
-        expect(triggerStartsWith.matches(messageFalse)).toBeFalse();
+        expect(triggerStartsWith.matches(messageTrue)).toBeTruthy();
+        expect(triggerStartsWith.matches(messageFalse)).toBeFalsy();
     });
 
     it("Trigger Ends With",function() {
@@ -20,8 +21,8 @@ describe(">Trigger Tests", function() {
         let messageFalse="world hello qwe";
         expect(triggerEndsWith).toBeDefined();
         expect(triggerEndsWith).toBeInstanceOf(Trigger);
-        expect(triggerEndsWith.matches(messageTrue)).toBeTrue();
-        expect(triggerEndsWith.matches(messageFalse)).toBeFalse();
+        expect(triggerEndsWith.matches(messageTrue)).toBeTruthy();
+        expect(triggerEndsWith.matches(messageFalse)).toBeFalsy();
     });
 
     it("Trigger Includes",function() {
@@ -30,8 +31,8 @@ describe(">Trigger Tests", function() {
         let messageFalse="world generate hi";
         expect(triggerIncludes).toBeDefined();
         expect(triggerIncludes).toBeInstanceOf(Trigger);
-        expect(triggerIncludes.matches(messageTrue)).toBeTrue();
-        expect(triggerIncludes.matches(messageFalse)).toBeFalse();
+        expect(triggerIncludes.matches(messageTrue)).toBeTruthy();
+        expect(triggerIncludes.matches(messageFalse)).toBeFalsy();
     });
 
     it("Trigger Regex",function() {
@@ -40,8 +41,8 @@ describe(">Trigger Tests", function() {
         let messageFalse="LOLAmeno";
         expect(triggerRegex).toBeDefined();
         expect(triggerRegex).toBeInstanceOf(Trigger);
-        expect(triggerRegex.matches(messageTrue)).toBeTrue();
-        expect(triggerRegex.matches(messageFalse)).toBeFalse();
+        expect(triggerRegex.matches(messageTrue)).toBeTruthy();
+        expect(triggerRegex.matches(messageFalse)).toBeFalsy();
     });
 
     it("Trigger Match",function() {
@@ -50,8 +51,8 @@ describe(">Trigger Tests", function() {
         let messageFalse="hello world 2";
         expect(triggerMatches).toBeDefined();
         expect(triggerMatches).toBeInstanceOf(Trigger);
-        expect(triggerMatches.matches(messageTrue)).toBeTrue();
-        expect(triggerMatches.matches(messageFalse)).toBeFalse();
+        expect(triggerMatches.matches(messageTrue)).toBeTruthy();
+        expect(triggerMatches.matches(messageFalse)).toBeFalsy();
     });
 
     it("Trigger Custom",function() {
@@ -63,8 +64,8 @@ describe(">Trigger Tests", function() {
         let messageFalse="hello world 2";
         expect(triggerCustom).toBeDefined();
         expect(triggerCustom).toBeInstanceOf(Trigger);
-        expect(triggerCustom.matches(messageTrue)).toBeTrue();
-        expect(triggerCustom.matches(messageFalse)).toBeFalse();
+        expect(triggerCustom.matches(messageTrue)).toBeTruthy();
+        expect(triggerCustom.matches(messageFalse)).toBeFalsy();
     });
 
 

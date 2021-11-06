@@ -19,8 +19,15 @@ export class Command extends AbstractCommand{
 
     run(msg:any, client:any, params:any) : any{
         return this.middlewareHandler.handle(msg,client,params,(msg:any,client:any,params:any)=>{
-            params=this.params;
-            return this.runFunction(msg,client,params);
+            //we do this to get the actual params and the tokens that come in the params eg for params:["prefix", "command", deez:"nutz"]
+            const paramKeys=Object.keys(params).filter(p => isNaN(parseInt(p)));
+            let middlewareParams:any={};
+            for (let i = 0; i < paramKeys.length; i++) {
+                const key = paramKeys[i];
+                middlewareParams[key] = params[key];
+            }
+            params={...this.params, ...middlewareParams}
+            return this.runFunction(msg, client, params);
         });
     }
 }

@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.BotMiddleware = exports.TriggerBuilder = exports.CommandBuilder = exports.CommandManager = void 0;
 var CommandManager_1 = require("./CommandManager");
-exports.CommandManager = CommandManager_1.CommandManagerInstance;
+Object.defineProperty(exports, "CommandManager", { enumerable: true, get: function () { return CommandManager_1.CommandManagerInstance; } });
 var CommandBuilder_1 = require("./CommandBuilder");
-exports.CommandBuilder = CommandBuilder_1.CommandBuilder;
+Object.defineProperty(exports, "CommandBuilder", { enumerable: true, get: function () { return CommandBuilder_1.CommandBuilder; } });
 var TriggerBuilder_1 = require("./TriggerBuilder");
-exports.TriggerBuilder = TriggerBuilder_1.TriggerBuilder;
+Object.defineProperty(exports, "TriggerBuilder", { enumerable: true, get: function () { return TriggerBuilder_1.TriggerBuilder; } });
 var BotMiddleware_1 = require("./middlewares/BotMiddleware");
-exports.BotMiddleware = BotMiddleware_1.BotMiddleware;
+Object.defineProperty(exports, "BotMiddleware", { enumerable: true, get: function () { return BotMiddleware_1.BotMiddleware; } });

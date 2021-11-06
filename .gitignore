@@ -1,5 +1,7 @@
 node_modules
-dist/tests
+.vscode
+src/test.ts
 dist/test.js
 dist/test.d.ts
-src/test.ts
+dist/tests
+

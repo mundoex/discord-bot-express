@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CommandInterpreter = void 0;
 const WordType_1 = require("./WordType");
 const CommandWord_1 = require("./CommandWord");
 class CommandInterpreter {

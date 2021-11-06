@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AbstractCommand = void 0;
 const MiddlewareHandler_1 = require("./middlewares/MiddlewareHandler");
 class AbstractCommand {
     /*

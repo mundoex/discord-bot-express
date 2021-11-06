@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.CommandManagerInstance = void 0;
 const Command_1 = require("./Command");
 const Trigger_1 = require("./Trigger");
 const MiddlewareHandler_1 = require("./middlewares/MiddlewareHandler");
@@ -50,8 +51,10 @@ class CommandManager {
     }
     /*
     create variable with the message split into tokens so each middleware call doesnt have to tokenize the message
+    because of triggers we need to check for matches even without prefix
     */
     handleMessage(msg, client) {
+        //if(!msg.content.startsWith(this.prefix)) return;
         const tokens = msg.content.split(" ");
         return this.middlewareHandler.handle(msg, client, tokens, (msgFromMiddleware, clientFromMiddleware, params) => {
             return this.checkForMatches(msgFromMiddleware, clientFromMiddleware, params);
@@ -66,7 +69,7 @@ class CommandManager {
         return this.triggersList[newLength - 1];
     }
     shouldTrigger() {
-        return this.triggerRate >= utils_1.randomBetween(0, 100);
+        return this.triggerRate >= (0, utils_1.randomBetween)(0, 100);
     }
     hasPrefix() {
         return this.prefix !== "";

@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.WordType = void 0;
 var WordType;
 (function (WordType) {
     WordType[WordType["Arg"] = 0] = "Arg";

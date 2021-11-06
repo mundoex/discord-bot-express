@@ -9,7 +9,7 @@ describe(">Command Tests", function() {
         let messageFalse="world hello";
         expect(commandNothing).toBeDefined();
         expect(commandNothing).toBeInstanceOf(Command);
-        expect(commandNothing.matches(messageTrue)).toBeTrue();
+        expect(commandNothing.matches(messageTrue)).toBeTruthy();
         //expect(commandNothing.matches(messageFalse)).toBeFalse();
     });
 
@@ -20,7 +20,7 @@ describe(">Command Tests", function() {
         expect(commandArg).toBeDefined();
         expect(commandArg).toBeInstanceOf(Command);
         //expect(commandArg.matches(messageFalse)).toBeFalse();
-        expect(commandArg.matches(messageTrue)).toBeTrue();
+        expect(commandArg.matches(messageTrue)).toBeTruthy();
         expect(commandArg.params.coin).toEqual("euro");
     });
 
@@ -31,7 +31,7 @@ describe(">Command Tests", function() {
         expect(commandArgs).toBeDefined();
         expect(commandArgs).toBeInstanceOf(Command);
         //expect(commandArgs.matches(messageFalse)).toBeFalse();
-        expect(commandArgs.matches(messageTrue)).toBeTrue();
+        expect(commandArgs.matches(messageTrue)).toBeTruthy();
         expect(commandArgs.params.option1).toEqual("euro");
         expect(commandArgs.params.option2).toEqual("dollar");
     });
@@ -43,9 +43,9 @@ describe(">Command Tests", function() {
         let messageTrue2="drive fastAF";
         expect(commandOpt).toBeDefined();
         expect(commandOpt).toBeInstanceOf(Command);
-        expect(commandOpt.matches(messageTrue)).toBeTrue();
-        expect(commandOpt.matches(messageFalse)).toBeFalse();
-        expect(commandOpt.matches(messageTrue2)).toBeTrue();
+        expect(commandOpt.matches(messageTrue)).toBeTruthy();
+        expect(commandOpt.matches(messageFalse)).toBeFalsy();
+        expect(commandOpt.matches(messageTrue2)).toBeTruthy();
         expect(commandOpt.params.velocity).toEqual("fastAF");
     });
 });

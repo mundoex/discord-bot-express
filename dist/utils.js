@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.randomBetween = exports.replaceSpacesWithSlashes = void 0;
 function replaceSpacesWithSlashes(text) {
     return text.replace(/[ ]/g, "/");
 }
