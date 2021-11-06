@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.MiddlewareHandler = void 0;
 class MiddlewareHandler {
     constructor() {
         this.stack = new Array();

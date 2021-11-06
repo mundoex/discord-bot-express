@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.TriggerBuilder = void 0;
 class TriggerBuilder {
     static StartsWith(word) {
         return (commandText) => { return commandText.startsWith(word); };

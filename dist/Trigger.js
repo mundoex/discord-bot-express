@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.Trigger = void 0;
 const AbstractCommand_1 = require("./AbstractCommand");
 class Trigger extends AbstractCommand_1.AbstractCommand {
     constructor(triggerMatchingFunction, middlewares) {
